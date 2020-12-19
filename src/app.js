@@ -22,7 +22,7 @@ app.post('/students', async (req, res) => {
     // write your codes here
     const newStudent = new Student(req.body);
     await newStudent.save();
-    res.sendStatus(201);
+    res.send(req.body);
 })
 
 // Get specific student
