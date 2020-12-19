@@ -29,8 +29,13 @@ app.post('/students', async (req, res) => {
 app.get('/students/:id', async (req, res) => {
     // write your codes here
     const id = req.params.id;
+
     const ans = await Student.findOne({"_id": id, "isDeleted": false});
+    if(ans === null) {
+        res.sendStatus(404);
+    }
     res.send(ans);
+
 })
 
 // delete specific student
