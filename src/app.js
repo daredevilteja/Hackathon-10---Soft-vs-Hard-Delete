@@ -51,11 +51,15 @@ app.delete('/students/:id', async (req, res) => {
         type = "hard";
     }
 
-    if (type === "soft") {
+    const newId = await Student.findOne({"_id": id});
+    if (type === "soft" && newId["isDeleted"] === false) {
         await Student.updateOne({"_id": id}, {"isDeleted": true});
-    } else {
+    } else if(type === "hard"){
         await Student.deleteOne({"_id": id})
+    } else {
+        res.sendStatus(404);
     }
+
     res.sendStatus(200);
 
 })
