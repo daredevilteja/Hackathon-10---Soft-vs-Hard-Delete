@@ -3,7 +3,6 @@ const Student = require('./models/Student');
 
 const isNullOrUndefined = (val) => {
     return val === null || val === undefined || val === "";
-
 }
 
 const app = express();
@@ -30,7 +29,7 @@ app.post('/students', async (req, res) => {
 app.get('/students/:id', async (req, res) => {
     // write your codes here
     const id = req.params.id;
-    const ans = await Student.findById(id);
+    const ans = await Student.findOne({"_id": id}, {"isDeleted": false});
     res.send(ans);
 })
 
@@ -40,14 +39,14 @@ app.delete('/students/:id', async (req, res) => {
     let type = req.query.type;
     const id = req.params.id;
 
-    if(isNullOrUndefined(id)) {
+    if (isNullOrUndefined(id)) {
         res.sendStatus(404);
     }
-    if(isNullOrUndefined(type)) {
+    if (isNullOrUndefined(type)) {
         type = "hard";
     }
 
-    if(type === "soft") {
+    if (type === "soft") {
         await Student.updateOne({"_id": id}, {"isDeleted": true});
     } else {
         await Student.deleteOne({"_id": id})
